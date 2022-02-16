@@ -1,18 +1,13 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
-
-interface RequestQuery {
-  name: string,
-  age: number
-}
+import { IUserProfile } from './interface/user_profile.interface'
+import { UserProfileService } from './user-profile.service';
 @Controller('users')
-export class UsersController {
+export class UserProfileController {
+  constructor(private userProfileService: UserProfileService) { }
+
   @Get()
-  findAll(@Query() query: RequestQuery): RequestQuery {
-    console.log('query ', query)
-    return {
-      name: 'string',
-      age: 10
-    }
+  async findAll(): Promise<IUserProfile[]> {
+    return this.userProfileService.findAll();
   }
 
   @Post()
