@@ -1,7 +1,7 @@
 import { UserCreateDTO } from './../dto/user-create.dto';
 import { PermissionCreateDTO } from './../dto/permission-create.dto';
 import { UserService } from './user.service';
-import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { Permission } from 'src/entities/permission.entity';
 import { RoleCreateDTO } from "src/dto/role-create.dto";
@@ -15,6 +15,11 @@ export class UserController {
         return this.userService.findAllUser();
     }
 
+    @Patch()
+    updateUser(@Body() updateUserDTO: UserCreateDTO) {
+        const updateUser = this.userService.updateUser(updateUserDTO);
+        return updateUser
+    }
     @Post()
     createUser(@Body() createUserDTO: UserCreateDTO) {
         console.log('create ', createUserDTO)

@@ -19,7 +19,7 @@ import { Permission } from './entities/Permission.entity';
       entities: [User,Role,Permission],
       synchronize: true,
     }),
-    UserModule
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

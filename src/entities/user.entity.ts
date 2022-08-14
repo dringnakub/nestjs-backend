@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { Entity, ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne  } from "typeorm";
 import { Role } from "./role.entity";
 
 export enum Gender {
@@ -17,7 +17,7 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => Role)
+    @ManyToOne(() => Role)
     @JoinColumn()
     role: number;
 

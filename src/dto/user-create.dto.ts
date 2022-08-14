@@ -9,7 +9,8 @@ export enum Status {
 }
 
 export class UserCreateDTO {
-    roleId?: number;
+    id?: number;
+    role?: number;
     userName: string;
     password: string;
     firstName: string;

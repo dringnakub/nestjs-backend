@@ -28,7 +28,11 @@ export class UserService {
             .getMany()
     }
     async createUser(createUserDTO: UserCreateDTO) {
-        return this.userRepo.save({ role: createUserDTO.roleId, ...createUserDTO })
+        return this.userRepo.save({ role: createUserDTO.role, ...createUserDTO })
+    }
+    async updateUser(createUserDTO: UserCreateDTO) {
+        console.log('createUserDTO ', createUserDTO)
+        return this.userRepo.update(createUserDTO.id, createUserDTO)
     }
 
     async findAllRole(): Promise<Role[]> {
