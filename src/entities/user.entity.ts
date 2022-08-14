@@ -1,9 +1,9 @@
-import { Entity, ObjectIdColumn, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { ObjectId } from "mongodb";
+import { Entity, ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { Role } from "./role.entity";
 
 export enum Gender {
     MALE = "male",
-    FEMALE = "female",
+    FEMALE = 'female'
 }
 
 export enum Status {
@@ -14,11 +14,12 @@ export enum Status {
 
 @Entity()
 export class User {
-    @ObjectIdColumn()
-    id: ObjectId;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-    @Column()
-    roleId?: number;
+    @OneToOne(() => Role)
+    @JoinColumn()
+    role: number;
 
     @Column()
     userName: string;
@@ -58,8 +59,11 @@ export class User {
     })
     status: Status
 
-    @Column()
-    lastLogin?: Date;
+    @Column({
+        unique: true,
+        nullable: true,
+    })
+    lastLogin: Date;
 
     @CreateDateColumn()
     createdOn: Date;

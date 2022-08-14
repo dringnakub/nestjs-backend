@@ -9,7 +9,7 @@ export enum Status {
 }
 
 export class UserCreateDTO {
-    roleId: number;
+    roleId?: number;
     userName: string;
     password: string;
     firstName: string;
@@ -19,7 +19,6 @@ export class UserCreateDTO {
     gender: Gender;
     userImg: string;
     mobileNumber: string;
-    status: Status;
     lastLogin: Date;
     createdOn: Date;
     updatedOn: Date;
