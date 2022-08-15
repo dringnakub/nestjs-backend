@@ -1,11 +1,12 @@
 import { UserCreateDTO } from './../dto/user-create.dto';
 import { PermissionCreateDTO } from './../dto/permission-create.dto';
 import { UserService } from './user.service';
-import { Controller, Get, Patch, Post, Body, Param, HttpException, HttpStatus, Delete } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Body, Param, HttpException, HttpStatus, Delete, UseGuards } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { Permission } from 'src/entities/permission.entity';
 import { RoleCreateDTO } from "src/dto/role-create.dto";
 import { Role } from 'src/entities/role.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -56,7 +57,7 @@ export class UserController {
         return createUser
     }
 
-
+    @UseGuards(JwtAuthGuard)
     @Post('permission')
     createPermission(@Body() createPermissionDTO: PermissionCreateDTO) {
         const createUser = this.userService.createPermission(createPermissionDTO)
