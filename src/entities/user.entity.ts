@@ -1,21 +1,12 @@
+import { Gender } from "src/enums/gender.enum";
+import { Status } from "src/enums/status.enum";
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from "typeorm";
 import { Role } from "./role.entity";
 
-
-export enum Gender {
-    MALE = "male",
-    FEMALE = 'female'
-}
-
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
-
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @ManyToOne(() => Role)
     @JoinColumn({ name: 'role_id' })

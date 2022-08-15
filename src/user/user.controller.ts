@@ -1,3 +1,5 @@
+import { UserGuard } from './../auth/guards/user.guard';
+import { RolesGuard } from './../auth/guards/roles.guard';
 import { UserCreateDTO } from './../dto/user-create.dto';
 import { PermissionCreateDTO } from './../dto/permission-create.dto';
 import { UserService } from './user.service';
@@ -6,7 +8,14 @@ import { User } from 'src/entities/user.entity';
 import { Permission } from 'src/entities/permission.entity';
 import { RoleCreateDTO } from "src/dto/role-create.dto";
 import { Role } from 'src/entities/role.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+
+
+export enum RoleRole {
+    ADMIN = "admin",
+    USER = "user",
+}
 
 @Controller('user')
 export class UserController {
@@ -57,7 +66,8 @@ export class UserController {
         return createUser
     }
 
-    @UseGuards(JwtAuthGuard)
+    @Roles(RoleRole.ADMIN)
+    @UseGuards(JwtAuthGuard, UserGuard)
     @Post('permission')
     createPermission(@Body() createPermissionDTO: PermissionCreateDTO) {
         const createUser = this.userService.createPermission(createPermissionDTO)

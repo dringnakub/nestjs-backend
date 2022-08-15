@@ -1,18 +1,9 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-
-
-export enum Gender {
-    MALE = "male",
-    FEMALE = "female",
-}
-
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
+import { Gender } from "src/enums/gender.enum";
+import { Status } from "src/enums/status.enum";
 
 export class UserCreateDTO {
-    id?: number;
+    id?: string;
     role?: number;
     @IsNotEmpty()
     userName: string;

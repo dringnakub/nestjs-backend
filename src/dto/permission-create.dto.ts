@@ -1,7 +1,4 @@
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
+import { Status } from "src/enums/status.enum";
 
 export class PermissionCreateDTO {
     headerMenu: string;

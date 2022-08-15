@@ -1,10 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Permission } from "./Permission.entity";
-
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
+import { Status } from "src/enums/status.enum";
 
 @Entity()
 export class Role {

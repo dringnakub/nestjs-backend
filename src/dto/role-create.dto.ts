@@ -1,9 +1,5 @@
 import { Permission } from "src/entities/Permission.entity";
-
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
+import { Status } from "src/enums/status.enum";
 
 export class RoleCreateDTO {
     roleName: string;

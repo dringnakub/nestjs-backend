@@ -10,15 +10,8 @@ import { Permission } from 'src/entities/Permission.entity';
 import { Role } from './../entities/role.entity';
 import { User } from 'src/entities/user.entity';
 
-export enum Status {
-    ACTIVE = "active",
-    INACTIVE = "inactive",
-}
-
-export enum Gender {
-    MALE = "male",
-    FEMALE = "female",
-}
+import { Gender } from "src/enums/gender.enum";
+import { Status } from "src/enums/status.enum";
 
 export type UserProfile = any;
 
@@ -57,12 +50,15 @@ export class UserService {
         return this.users.find(user => user.username === username)
     }
 
-    async findUser(id?: string): Promise<User[]> {
+    async findUser(id?: string, take: number = 10, skip: number = 10): Promise<User[]> {
         const status: string = 'active'
         let query = this.userRepo.createQueryBuilder('user')
             .leftJoinAndSelect("user.role", "role")
             .leftJoinAndSelect('role.permissions', 'permission')
             .where('user.status = :status ', { status })
+            .orderBy('post.createdAt', 'DESC')
+            .take(take)
+            .skip(skip)
         if (id) {
             query = query.andWhere(`user.id = ${id}`);
         }
