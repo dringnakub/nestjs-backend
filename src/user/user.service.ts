@@ -10,6 +10,11 @@ import { Permission } from 'src/entities/Permission.entity';
 import { Role } from './../entities/role.entity';
 import { User } from 'src/entities/user.entity';
 
+export enum Status {
+    ACTIVE = "active",
+    INACTIVE = "inactive",
+}
+
 @Injectable()
 export class UserService {
     constructor(
@@ -21,18 +26,28 @@ export class UserService {
         private permissionRepo: Repository<Permission>
     ) { }
 
-    async findAllUser(): Promise<User[]> {
-        return this.userRepo.createQueryBuilder('user')
+    async findUser(id?: string): Promise<User[]> {
+        const status: string = 'active'
+        let query = this.userRepo.createQueryBuilder('user')
             .leftJoinAndSelect("user.role", "role")
             .leftJoinAndSelect('role.permissions', 'permission')
-            .getMany()
+            .where('user.status = :status ', { status })
+        if (id) {
+            query = query.andWhere(`user.id = ${id}`);
+        }
+        const result = query.getMany()
+        return result
+
     }
     async createUser(createUserDTO: UserCreateDTO) {
         return this.userRepo.save({ role: createUserDTO.role, ...createUserDTO })
     }
-    async updateUser(createUserDTO: UserCreateDTO) {
-        console.log('createUserDTO ', createUserDTO)
+    updateUser(createUserDTO: UserCreateDTO) {
         return this.userRepo.update(createUserDTO.id, createUserDTO)
+    }
+
+    deleteUser(createUserDTO: UserCreateDTO) {
+        return this.userRepo.update(createUserDTO.id, { status: Status.INACTIVE })
     }
 
     async findAllRole(): Promise<Role[]> {
