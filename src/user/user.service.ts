@@ -15,8 +15,16 @@ export enum Status {
     INACTIVE = "inactive",
 }
 
+export enum Gender {
+    MALE = "male",
+    FEMALE = "female",
+}
+
+export type UserProfile = any;
+
 @Injectable()
 export class UserService {
+    private readonly users: UserProfile[];
     constructor(
         @InjectRepository(User)
         private userRepo: Repository<User>,
@@ -24,7 +32,30 @@ export class UserService {
         private roleRepo: Repository<Role>,
         @InjectRepository(Permission)
         private permissionRepo: Repository<Permission>
-    ) { }
+    ) {
+        this.users = [
+            {
+                id: 1,
+                username: "dring",
+                password: "123",
+            },
+            {
+                id: 2,
+                username: "dringrider",
+                password: "1234",
+            },
+            {
+                id: 3,
+                username: "komsan",
+                password: "12345",
+            }
+        ]
+    }
+
+    async findOne(username: string): Promise<UserProfile | undefined> {
+        console.log('userService findOne')
+        return this.users.find(user => user.username === username)
+    }
 
     async findUser(id?: string): Promise<User[]> {
         const status: string = 'active'
