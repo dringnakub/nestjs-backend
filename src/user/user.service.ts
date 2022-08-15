@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { PermissionCreateDTO } from './../dto/permission-create.dto';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -10,7 +11,6 @@ import { Permission } from 'src/entities/Permission.entity';
 import { Role } from './../entities/role.entity';
 import { User } from 'src/entities/user.entity';
 
-import { Gender } from "src/enums/gender.enum";
 import { Status } from "src/enums/status.enum";
 
 export type UserProfile = any;
@@ -25,29 +25,15 @@ export class UserService {
         private roleRepo: Repository<Role>,
         @InjectRepository(Permission)
         private permissionRepo: Repository<Permission>
-    ) {
-        this.users = [
-            {
-                id: 1,
-                username: "dring",
-                password: "123",
-            },
-            {
-                id: 2,
-                username: "dringrider",
-                password: "1234",
-            },
-            {
-                id: 3,
-                username: "komsan",
-                password: "12345",
-            }
-        ]
+    ) { }
+
+    async hashPassword(password: string) {
+        const salt = await bcrypt.genSalt();
+        return await bcrypt.hash(password, salt);
     }
 
-    async findOne(username: string): Promise<UserProfile | undefined> {
-        console.log('userService findOne')
-        return this.users.find(user => user.username === username)
+    async findOne(username: string): Promise<User | undefined> {
+        return this.userRepo.findOne({ userName: username })
     }
 
     async findUser(id?: string, take: number = 10, skip: number = 10): Promise<User[]> {
@@ -67,7 +53,17 @@ export class UserService {
 
     }
     async createUser(createUserDTO: UserCreateDTO) {
-        return this.userRepo.save({ role: createUserDTO.role, ...createUserDTO })
+        const userResult = await this.userRepo.findOne({ userName: createUserDTO.userName })
+        if (userResult) {
+            if (userResult.email === createUserDTO.email) {
+               throw 'email exist'
+            }
+            throw 'username exist'
+        }
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(createUserDTO.password, salt)
+        createUserDTO.password = passwordHash;
+        return this.userRepo.save(createUserDTO)
     }
     updateUser(createUserDTO: UserCreateDTO) {
         return this.userRepo.update(createUserDTO.id, createUserDTO)

@@ -1,7 +1,7 @@
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, JoinColumn, ManyToOne, BeforeInsert } from "typeorm";
+import { Role } from "./role.entity";
 import { Gender } from "src/enums/gender.enum";
 import { Status } from "src/enums/status.enum";
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from "typeorm";
-import { Role } from "./role.entity";
 
 @Entity()
 export class User {
