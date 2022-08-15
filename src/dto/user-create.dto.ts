@@ -17,12 +17,13 @@ export class UserCreateDTO {
     lastName: string;
     dateOfBirth: string;
     email: string;
-    gender: Gender;
     userImg: string;
+    gender: Gender;
     mobileNumber: string;
     lastLogin: Date;
+    status: Status;
     createdOn: Date;
-    updatedOn: Date;
+    updatedOn?: Date;
     createdBy: number;
-    updatedBy: number;
+    updatedBy?: number;
 }

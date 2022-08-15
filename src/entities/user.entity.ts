@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne  } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn,PrimaryColumn, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from "typeorm";
 import { Role } from "./role.entity";
 
 export enum Gender {
@@ -11,32 +11,31 @@ export enum Status {
     INACTIVE = "inactive",
 }
 
-
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
     @ManyToOne(() => Role)
-    @JoinColumn()
+    @JoinColumn({ name: 'role_id' })
     role: number;
 
-    @Column()
+    @Column({ length: 30, name: "user_name" })
     userName: string;
 
-    @Column()
+    @Column({ length: 100 })
     password: string;
 
-    @Column()
+    @Column({ length: 50, name: "first_name" })
     firstName: string;
 
-    @Column()
+    @Column({ length: 50, name: "last_name" })
     lastName: string;
 
-    @Column()
+    @Column({ name: "date_of_birth" })
     dateOfBirth: string;
 
-    @Column()
+    @Column({ length: 50 })
     email: string;
 
     @Column({
@@ -46,11 +45,17 @@ export class User {
     })
     gender: Gender;
 
-    @Column()
+    @Column({ length: 100, name: "user_img" })
     userImg: string;
 
-    @Column()
+    @Column({ length: 10, name: "mobile_number" })
     mobileNumber: string;
+
+    @Column({
+        nullable: true,
+        name: 'last_login'
+    })
+    lastLogin: Date;
 
     @Column({
         type: "enum",
@@ -59,21 +64,21 @@ export class User {
     })
     status: Status
 
-    @Column({
-        unique: true,
-        nullable: true,
-    })
-    lastLogin: Date;
-
-    @CreateDateColumn()
+    @CreateDateColumn({ name: 'created_on' })
     createdOn: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({
+        nullable: true,
+        name: 'updated_on'
+    })
     updatedOn: Date;
 
-    @Column()
+    @Column({ name: 'created_by' })
     createdBy: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+        name: 'updated_by'
+    })
     updatedBy: number;
 }
